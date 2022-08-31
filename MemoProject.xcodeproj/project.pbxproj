@@ -17,6 +17,15 @@
 		25D7792528BF4C6B00563EF0 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 25D7792428BF4C6B00563EF0 /* RealmSwift */; };
 		25D7792828BF4C8C00563EF0 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 25D7792728BF4C8C00563EF0 /* SnapKit */; };
 		25D7792B28BF4CBA00563EF0 /* Toast in Frameworks */ = {isa = PBXBuildFile; productRef = 25D7792A28BF4CBA00563EF0 /* Toast */; };
+		25D7793228BF52EE00563EF0 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25D7793128BF52EE00563EF0 /* Color.swift */; };
+		25D7793428BF52F900563EF0 /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25D7793328BF52F900563EF0 /* Constant.swift */; };
+		25D7793628BF54FD00563EF0 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25D7793528BF54FD00563EF0 /* BaseViewController.swift */; };
+		25D7793828BF553200563EF0 /* BaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25D7793728BF553200563EF0 /* BaseView.swift */; };
+		25D7793A28BF556800563EF0 /* BaseTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25D7793928BF556800563EF0 /* BaseTableViewCell.swift */; };
+		25D7793D28BF55CC00563EF0 /* ReusableViewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25D7793C28BF55CC00563EF0 /* ReusableViewProtocol.swift */; };
+		25D7794128BF571200563EF0 /* WalkThroughViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25D7794028BF571200563EF0 /* WalkThroughViewController.swift */; };
+		25D7794328BF571F00563EF0 /* WalkThroughView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25D7794228BF571F00563EF0 /* WalkThroughView.swift */; };
+		25D7794628BF592400563EF0 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 25D7794528BF592400563EF0 /* Then */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +37,14 @@
 		25D7791628BF4A3300563EF0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		25D7791928BF4A3300563EF0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		25D7791B28BF4A3300563EF0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		25D7793128BF52EE00563EF0 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
+		25D7793328BF52F900563EF0 /* Constant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
+		25D7793528BF54FD00563EF0 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
+		25D7793728BF553200563EF0 /* BaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseView.swift; sourceTree = "<group>"; };
+		25D7793928BF556800563EF0 /* BaseTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTableViewCell.swift; sourceTree = "<group>"; };
+		25D7793C28BF55CC00563EF0 /* ReusableViewProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReusableViewProtocol.swift; sourceTree = "<group>"; };
+		25D7794028BF571200563EF0 /* WalkThroughViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalkThroughViewController.swift; sourceTree = "<group>"; };
+		25D7794228BF571F00563EF0 /* WalkThroughView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalkThroughView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -35,6 +52,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				25D7794628BF592400563EF0 /* Then in Frameworks */,
 				25D7792B28BF4CBA00563EF0 /* Toast in Frameworks */,
 				25D7792828BF4C8C00563EF0 /* SnapKit in Frameworks */,
 				25D7792528BF4C6B00563EF0 /* RealmSwift in Frameworks */,
@@ -64,6 +82,10 @@
 		25D7790C28BF4A3200563EF0 /* MemoProject */ = {
 			isa = PBXGroup;
 			children = (
+				25D7792D28BF4DA100563EF0 /* DataBase */,
+				25D7792C28BF4D0400563EF0 /* Scene */,
+				25D7792F28BF4DC200563EF0 /* Utility */,
+				25D7793B28BF55A500563EF0 /* Protocol */,
 				25D7790D28BF4A3200563EF0 /* AppDelegate.swift */,
 				25D7790F28BF4A3200563EF0 /* SceneDelegate.swift */,
 				25D7791128BF4A3200563EF0 /* ViewController.swift */,
@@ -73,6 +95,74 @@
 				25D7791B28BF4A3300563EF0 /* Info.plist */,
 			);
 			path = MemoProject;
+			sourceTree = "<group>";
+		};
+		25D7792C28BF4D0400563EF0 /* Scene */ = {
+			isa = PBXGroup;
+			children = (
+				25D7793F28BF56DE00563EF0 /* Write */,
+				25D7793E28BF56C400563EF0 /* WalkThrough */,
+				25D7792E28BF4DB500563EF0 /* Memo */,
+			);
+			path = Scene;
+			sourceTree = "<group>";
+		};
+		25D7792D28BF4DA100563EF0 /* DataBase */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = DataBase;
+			sourceTree = "<group>";
+		};
+		25D7792E28BF4DB500563EF0 /* Memo */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Memo;
+			sourceTree = "<group>";
+		};
+		25D7792F28BF4DC200563EF0 /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				25D7793028BF4DE600563EF0 /* Constants */,
+				25D7793528BF54FD00563EF0 /* BaseViewController.swift */,
+				25D7793728BF553200563EF0 /* BaseView.swift */,
+				25D7793928BF556800563EF0 /* BaseTableViewCell.swift */,
+			);
+			path = Utility;
+			sourceTree = "<group>";
+		};
+		25D7793028BF4DE600563EF0 /* Constants */ = {
+			isa = PBXGroup;
+			children = (
+				25D7793128BF52EE00563EF0 /* Color.swift */,
+				25D7793328BF52F900563EF0 /* Constant.swift */,
+			);
+			path = Constants;
+			sourceTree = "<group>";
+		};
+		25D7793B28BF55A500563EF0 /* Protocol */ = {
+			isa = PBXGroup;
+			children = (
+				25D7793C28BF55CC00563EF0 /* ReusableViewProtocol.swift */,
+			);
+			path = Protocol;
+			sourceTree = "<group>";
+		};
+		25D7793E28BF56C400563EF0 /* WalkThrough */ = {
+			isa = PBXGroup;
+			children = (
+				25D7794028BF571200563EF0 /* WalkThroughViewController.swift */,
+				25D7794228BF571F00563EF0 /* WalkThroughView.swift */,
+			);
+			path = WalkThrough;
+			sourceTree = "<group>";
+		};
+		25D7793F28BF56DE00563EF0 /* Write */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Write;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -96,6 +186,7 @@
 				25D7792428BF4C6B00563EF0 /* RealmSwift */,
 				25D7792728BF4C8C00563EF0 /* SnapKit */,
 				25D7792A28BF4CBA00563EF0 /* Toast */,
+				25D7794528BF592400563EF0 /* Then */,
 			);
 			productName = MemoProject;
 			productReference = 25D7790A28BF4A3200563EF0 /* MemoProject.app */;
@@ -129,6 +220,7 @@
 				25D7792128BF4C6B00563EF0 /* XCRemoteSwiftPackageReference "realm-swift" */,
 				25D7792628BF4C8C00563EF0 /* XCRemoteSwiftPackageReference "SnapKit" */,
 				25D7792928BF4CB900563EF0 /* XCRemoteSwiftPackageReference "Toast-Swift" */,
+				25D7794428BF592400563EF0 /* XCRemoteSwiftPackageReference "Then" */,
 			);
 			productRefGroup = 25D7790B28BF4A3200563EF0 /* Products */;
 			projectDirPath = "";
@@ -157,9 +249,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				25D7793A28BF556800563EF0 /* BaseTableViewCell.swift in Sources */,
+				25D7794328BF571F00563EF0 /* WalkThroughView.swift in Sources */,
 				25D7791228BF4A3200563EF0 /* ViewController.swift in Sources */,
+				25D7793D28BF55CC00563EF0 /* ReusableViewProtocol.swift in Sources */,
+				25D7793228BF52EE00563EF0 /* Color.swift in Sources */,
+				25D7793428BF52F900563EF0 /* Constant.swift in Sources */,
+				25D7794128BF571200563EF0 /* WalkThroughViewController.swift in Sources */,
 				25D7790E28BF4A3200563EF0 /* AppDelegate.swift in Sources */,
+				25D7793828BF553200563EF0 /* BaseView.swift in Sources */,
 				25D7791028BF4A3200563EF0 /* SceneDelegate.swift in Sources */,
+				25D7793628BF54FD00563EF0 /* BaseViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -405,6 +505,14 @@
 				minimumVersion = 5.0.0;
 			};
 		};
+		25D7794428BF592400563EF0 /* XCRemoteSwiftPackageReference "Then" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/devxoul/Then.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -427,6 +535,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 25D7792928BF4CB900563EF0 /* XCRemoteSwiftPackageReference "Toast-Swift" */;
 			productName = Toast;
+		};
+		25D7794528BF592400563EF0 /* Then */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 25D7794428BF592400563EF0 /* XCRemoteSwiftPackageReference "Then" */;
+			productName = Then;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
