@@ -40,13 +40,17 @@ class MemoTableViewCell: BaseTableViewCell {
     override func configureCell() {
         [titleLabel, stackView].forEach { contentView.addSubview($0) }
     }
-    // cell 크기에 비례해서 제약조건 설정해주기
+    
     override func setCellConstraints() {
         titleLabel.snp.makeConstraints { make in
             make.top.equalTo(contentView).offset(8)
             make.leading.equalTo(contentView).offset(16)
         }
         
-        
+        stackView.snp.makeConstraints { make in
+            make.top.equalTo(titleLabel.snp.bottom).offset(8)
+            make.leading.equalTo(contentView).offset(16)
+            make.centerX.equalTo(contentView.snp.centerX)
+        }
     }
 }

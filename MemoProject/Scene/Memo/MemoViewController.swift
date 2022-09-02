@@ -6,11 +6,12 @@
 //
 
 import UIKit
+import RealmSwift
 
 class MemoViewController: BaseViewController {
     
     lazy var tableView = UITableView().then {
-        $0.rowHeight = 60
+        $0.rowHeight = 54
         $0.backgroundColor = Constants.BaseColor.background
         $0.delegate = self
         $0.dataSource = self
@@ -18,8 +19,16 @@ class MemoViewController: BaseViewController {
     }
     
     let searchController = UISearchController(searchResultsController: nil)
-
-    let fixedList = [String]()
+    
+    let repository = UserMemoRepository()
+    
+    var fixedList: [String]?
+    
+    var tasks: Results<UserMemo>! {
+        didSet {
+            self.tableView.reloadData()
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()

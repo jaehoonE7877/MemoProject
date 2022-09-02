@@ -10,6 +10,7 @@
 		2516980628C1F353004850DB /* MemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2516980528C1F353004850DB /* MemoViewController.swift */; };
 		2516980828C1F363004850DB /* MemoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2516980728C1F363004850DB /* MemoTableViewCell.swift */; };
 		2516980E28C1FA0B004850DB /* RealmModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2516980D28C1FA0B004850DB /* RealmModel.swift */; };
+		253B49FF28C209D000C3BE8D /* UserMemoRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 253B49FE28C209D000C3BE8D /* UserMemoRepository.swift */; };
 		25D7790E28BF4A3200563EF0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25D7790D28BF4A3200563EF0 /* AppDelegate.swift */; };
 		25D7791028BF4A3200563EF0 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25D7790F28BF4A3200563EF0 /* SceneDelegate.swift */; };
 		25D7791228BF4A3200563EF0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25D7791128BF4A3200563EF0 /* ViewController.swift */; };
@@ -35,6 +36,7 @@
 		2516980528C1F353004850DB /* MemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoViewController.swift; sourceTree = "<group>"; };
 		2516980728C1F363004850DB /* MemoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoTableViewCell.swift; sourceTree = "<group>"; };
 		2516980D28C1FA0B004850DB /* RealmModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmModel.swift; sourceTree = "<group>"; };
+		253B49FE28C209D000C3BE8D /* UserMemoRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserMemoRepository.swift; sourceTree = "<group>"; };
 		25D7790A28BF4A3200563EF0 /* MemoProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MemoProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		25D7790D28BF4A3200563EF0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		25D7790F28BF4A3200563EF0 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -117,6 +119,7 @@
 			isa = PBXGroup;
 			children = (
 				2516980D28C1FA0B004850DB /* RealmModel.swift */,
+				253B49FE28C209D000C3BE8D /* UserMemoRepository.swift */,
 			);
 			path = DataBase;
 			sourceTree = "<group>";
@@ -259,6 +262,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				25D7793A28BF556800563EF0 /* BaseTableViewCell.swift in Sources */,
+				253B49FF28C209D000C3BE8D /* UserMemoRepository.swift in Sources */,
 				2516980E28C1FA0B004850DB /* RealmModel.swift in Sources */,
 				2516980828C1F363004850DB /* MemoTableViewCell.swift in Sources */,
 				25D7794328BF571F00563EF0 /* WalkThroughView.swift in Sources */,
