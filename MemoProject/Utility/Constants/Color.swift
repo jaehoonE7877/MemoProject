@@ -7,11 +7,11 @@
 
 import UIKit
 
-extension UIColor {
+extension Constants {
     enum BaseColor {
         static let myYello = UIColor(red: 240/255, green: 200/255, blue: 15/255, alpha: 1)
-        static let darkModeText = UIColor.lightText
-        static let lightModeText = UIColor.darkText
-        static let detailText = UIColor.placeholderText
+        static let text = UIColor.white
+        static let subText = UIColor.lightGray
+        static let background = UIColor.black
     }
 }
