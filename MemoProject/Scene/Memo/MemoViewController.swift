@@ -31,12 +31,15 @@ class MemoViewController: BaseViewController {
         return isActive && isSearchBarHasText
     }
     
-    var filteredArr: [String] = []
+    var filteredTitle: [String] = []
+    var filteredContents: [String] = []
     
     var tasks: Results<UserMemo>! {
         didSet {
             self.tableView.reloadData()
-            self.navigationItem.title = "\(tasks?.count ?? 0)개의 메모"
+            let numFormat = NumberFormatter()
+            numFormat.numberStyle = .decimal
+            self.navigationItem.title = "\(format(for: tasks.count))개의 메모"
         }
     }
     
@@ -120,6 +123,12 @@ class MemoViewController: BaseViewController {
         tasks = repository.fetchMemo()
     }
     
+    func format(for number: Int) -> String {
+        let numberFormat = NumberFormatter()
+        numberFormat.numberStyle = .decimal
+        return numberFormat.string(for: number) ?? "0"
+    }
+    
 }
 
 extension MemoViewController: UITableViewDelegate, UITableViewDataSource {
@@ -133,18 +142,23 @@ extension MemoViewController: UITableViewDelegate, UITableViewDataSource {
         
         let headerView = HeaderView()
         
-        if repository.fetchIsFixed() {
+        if isFiltering {
             if section == 0 {
-                headerView.headerLabel.text = "고정된 메모"
-            } else if section == 1 {
-                headerView.headerLabel.text = "메모"
-            }
-        } else {
-            if section == 0 {
-                headerView.headerLabel.text = "메모"
+                headerView.headerLabel.text = "0개 찾음"
+            } else {
+                if repository.fetchIsFixed() {
+                    if section == 0 {
+                        headerView.headerLabel.text = "고정된 메모"
+                    } else if section == 1 {
+                        headerView.headerLabel.text = "메모"
+                    }
+                } else {
+                    if section == 0 {
+                        headerView.headerLabel.text = "메모"
+                    }
+                }
             }
         }
-        
         return headerView
     }
     
@@ -254,7 +268,7 @@ extension MemoViewController: UITableViewDelegate, UITableViewDataSource {
         
         var memoList = [UserMemo]()
         var fixList = [UserMemo]()
-        
+                
         for item in tasks {
             if item.isFixed {
                 fixList.append(item)
@@ -262,23 +276,18 @@ extension MemoViewController: UITableViewDelegate, UITableViewDataSource {
                 memoList.append(item)
             }
         }
-        var title = ""
-        var contents = ""
+        let vc = WriteViewController()
+        
         if fixList.count == 0 {
-            title = memoList[indexPath.row].memoTitle
-            contents = memoList[indexPath.row].memoContents ?? ""
+            vc.memoTask = memoList[indexPath.row]
         } else {
             if indexPath.section == 0 {
-                title = fixList[indexPath.row].memoTitle
-                contents = fixList[indexPath.row].memoContents ? ""
+                vc.memoTask = fixList[indexPath.row]
             } else if indexPath.section == 1{
-                title = memoList[indexPath.row].memoTitle
-                contents = memoList[indexPath.row].memoContents ? ""
+                vc.memoTask = memoList[indexPath.row]
             }
         }
         
-        let vc = WriteViewController()
-        vc.textView.text = "\(title) + \()"
         self.navigationItem.backButtonTitle = "수정"
         self.navigationController?.navigationBar.tintColor = .orange
         self.navigationController?.pushViewController(vc, animated: true)
@@ -289,10 +298,14 @@ extension MemoViewController: UITableViewDelegate, UITableViewDataSource {
 extension MemoViewController: UISearchBarDelegate, UISearchResultsUpdating {
     
     func updateSearchResults(for searchController: UISearchController) {
+        
         guard let text = searchController.searchBar.text?.lowercased() else { return }
         
-        //        self.filteredArr = memoTitle.filter{ $0.lowercased().contains(text) }
-        //        dump(filteredArr)
+        let memoTitleList: [String] = self.repository.fetchMemo().map { $0.memoTitle }
+        //let memoContentsList: [String?] = self.repository.fetchMemo().map { $0.memoContents }
+        self.filteredTitle = memoTitleList.filter{ $0.lowercased().contains(text) }
+        //self.filteredContents = memoContentsList.filter{ $0.lowercased().contains(text) }
+              
         
         DispatchQueue.main.async {
             self.tableView.reloadData()

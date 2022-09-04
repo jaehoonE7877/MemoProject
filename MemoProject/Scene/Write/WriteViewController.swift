@@ -18,11 +18,33 @@ class WriteViewController: BaseViewController{
     let repository = UserMemoRepository()
     var memoTitle: String?
     var memoContents: String?
+    var memoTask: UserMemo?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setNavi()
+        
+        guard let memoTask = memoTask else { return }
+        textView.text = "\(String(describing: memoTask.memoTitle))\n\(String(describing: memoTask.memoContents ?? ""))"
+        
+        
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        
+        guard let memoTitle = memoTitle, let memoContents = memoContents else { return }
+        let userMemo = UserMemo(memoTitle: memoTitle, memoContents: memoContents, memoDate: Date(), isFixed: memoTask?.isFixed ?? false)
+        repository.addMemo(item: userMemo)
+        
+        guard let memoTask = memoTask else { return }
+        if memoTask.memoContents == memoContents {
+            return
+        } else {
+            repository.deleteMemo(item: memoTask)
+        }
     }
     
     override func configure() {
@@ -52,15 +74,10 @@ class WriteViewController: BaseViewController{
     //realm
     @objc func saveButtonTapped(){
         
-        if let memoTitle = memoTitle, let memoContents = memoContents {
-            let userMemo = UserMemo(memoTitle: memoTitle, memoContents: memoContents, memoDate: Date(), isFixed: false)
-            repository.addMemo(item: userMemo)
-            self.navigationController?.popViewController(animated: true)
-        } else {
-            self.navigationController?.popViewController(animated: true)
-        }
+        self.navigationController?.popViewController(animated: true)
 
     }
+    
     
     
 }
@@ -74,6 +91,7 @@ extension WriteViewController: UITextViewDelegate {
         let textArray = currentText.components(separatedBy: "\n")
         
         memoTitle = String(textArray[0])
+        
         memoContents = textArray.filter{ $0 != textArray[0] }.joined(separator: "\n")
         
         return true

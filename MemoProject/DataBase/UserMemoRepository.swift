@@ -24,7 +24,7 @@ class UserMemoRepository {
     }
     // tableView에 보여줄 때⭐️함수 변경해야됨 isFixed에 따라서 섹션분리
     func fetchMemo() -> Results<UserMemo>! {
-        return localRealm.objects(UserMemo.self).sorted(byKeyPath: "memoDate", ascending: true)
+        return localRealm.objects(UserMemo.self).sorted(byKeyPath: "memoDate", ascending: false)
     }
     //trailingSwipe에서
     func deleteMemo(item: UserMemo){
@@ -56,4 +56,5 @@ class UserMemoRepository {
         }
         return cnt > 0 ? true : false
     }
+    
 }
