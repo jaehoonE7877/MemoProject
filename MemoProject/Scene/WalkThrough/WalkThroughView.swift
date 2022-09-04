@@ -10,7 +10,7 @@ import UIKit
 class WalkThroughView: BaseView {
     
     let view = UIView().then {
-        $0.backgroundColor = UIColor(white: 1, alpha: 0.2)
+        $0.backgroundColor = UIColor(white: 0.2, alpha: 0.2)
     }
     
     let backgroundView = UIView().then {

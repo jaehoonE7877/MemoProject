@@ -47,4 +47,13 @@ class UserMemoRepository {
         }
     }
     
+    func fetchIsFixed() -> Bool{
+        var cnt = 0
+        localRealm.objects(UserMemo.self).forEach { item in
+            if item.isFixed {
+            cnt += 1
+            }
+        }
+        return cnt > 0 ? true : false
+    }
 }

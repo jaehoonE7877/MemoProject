@@ -11,6 +11,7 @@
 		2516980828C1F363004850DB /* MemoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2516980728C1F363004850DB /* MemoTableViewCell.swift */; };
 		2516980E28C1FA0B004850DB /* RealmModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2516980D28C1FA0B004850DB /* RealmModel.swift */; };
 		252F7D5828C332B80099337A /* WriteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252F7D5728C332B80099337A /* WriteViewController.swift */; };
+		252F7D5E28C46C140099337A /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252F7D5D28C46C140099337A /* HeaderView.swift */; };
 		253B49FF28C209D000C3BE8D /* UserMemoRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 253B49FE28C209D000C3BE8D /* UserMemoRepository.swift */; };
 		25D7790E28BF4A3200563EF0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25D7790D28BF4A3200563EF0 /* AppDelegate.swift */; };
 		25D7791028BF4A3200563EF0 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25D7790F28BF4A3200563EF0 /* SceneDelegate.swift */; };
@@ -38,6 +39,7 @@
 		2516980728C1F363004850DB /* MemoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoTableViewCell.swift; sourceTree = "<group>"; };
 		2516980D28C1FA0B004850DB /* RealmModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmModel.swift; sourceTree = "<group>"; };
 		252F7D5728C332B80099337A /* WriteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WriteViewController.swift; sourceTree = "<group>"; };
+		252F7D5D28C46C140099337A /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
 		253B49FE28C209D000C3BE8D /* UserMemoRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserMemoRepository.swift; sourceTree = "<group>"; };
 		25D7790A28BF4A3200563EF0 /* MemoProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MemoProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		25D7790D28BF4A3200563EF0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -73,6 +75,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		252F7D5C28C46C000099337A /* CustomView */ = {
+			isa = PBXGroup;
+			children = (
+				252F7D5D28C46C140099337A /* HeaderView.swift */,
+			);
+			path = CustomView;
+			sourceTree = "<group>";
+		};
 		25D7790128BF4A3200563EF0 = {
 			isa = PBXGroup;
 			children = (
@@ -138,6 +148,7 @@
 		25D7792F28BF4DC200563EF0 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				252F7D5C28C46C000099337A /* CustomView */,
 				25D7793028BF4DE600563EF0 /* Constants */,
 				25D7793528BF54FD00563EF0 /* BaseViewController.swift */,
 				25D7793728BF553200563EF0 /* BaseView.swift */,
@@ -270,6 +281,7 @@
 				2516980E28C1FA0B004850DB /* RealmModel.swift in Sources */,
 				2516980828C1F363004850DB /* MemoTableViewCell.swift in Sources */,
 				25D7794328BF571F00563EF0 /* WalkThroughView.swift in Sources */,
+				252F7D5E28C46C140099337A /* HeaderView.swift in Sources */,
 				25D7791228BF4A3200563EF0 /* ViewController.swift in Sources */,
 				25D7793D28BF55CC00563EF0 /* ReusableViewProtocol.swift in Sources */,
 				25D7793228BF52EE00563EF0 /* Color.swift in Sources */,

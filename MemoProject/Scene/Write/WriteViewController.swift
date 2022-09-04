@@ -11,10 +11,13 @@ class WriteViewController: BaseViewController{
     
     lazy var textView = UITextView().then {
         $0.textColor = Constants.BaseColor.text
+        $0.font = .boldSystemFont(ofSize: 16)
         $0.delegate = self
     }
     
     let repository = UserMemoRepository()
+    var memoTitle: String?
+    var memoContents: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,7 +31,8 @@ class WriteViewController: BaseViewController{
     
     override func setConstraints() {
         textView.snp.makeConstraints { make in
-            make.top.bottom.leading.trailing.equalTo(view.safeAreaLayoutGuide)
+            make.top.bottom.equalTo(view.safeAreaLayoutGuide)
+            make.leading.trailing.equalToSuperview().inset(16)
         }
     }
     
@@ -37,20 +41,27 @@ class WriteViewController: BaseViewController{
         let shareButton = UIBarButtonItem(image: UIImage(systemName: "square.and.arrow.up"), style: .plain, target: self, action: #selector(shareButtonTapped))
         let saveButton = UIBarButtonItem(title: "완료", style: .plain, target: self, action: #selector(saveButtonTapped))
         
-        navigationItem.rightBarButtonItems = [shareButton, saveButton]
+        navigationItem.rightBarButtonItems = [saveButton, shareButton]
     }
     //UiActivityViewController
     @objc func shareButtonTapped(){
-        
+        let activityItems: [Any] = ["메모를 공유해보세요!"]
+        let activity = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
+        self.present(activity, animated: true, completion: nil)
     }
     //realm
     @objc func saveButtonTapped(){
         
+        if let memoTitle = memoTitle, let memoContents = memoContents {
+            let userMemo = UserMemo(memoTitle: memoTitle, memoContents: memoContents, memoDate: Date(), isFixed: false)
+            repository.addMemo(item: userMemo)
+            self.navigationController?.popViewController(animated: true)
+        } else {
+            self.navigationController?.popViewController(animated: true)
+        }
+
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        <#code#>
-    }
     
 }
 
@@ -60,14 +71,12 @@ extension WriteViewController: UITextViewDelegate {
         
         guard let currentText = textView.text else { return true }
         
-        if text == "\n" {
-            let userMemo = UserMemo(memoTitle: currentText, memoContents: nil, memoDate: Date(), isFixed: false)
-            repository.addMemo(item: userMemo)
-        } else {
-            
-        }
+        let textArray = currentText.components(separatedBy: "\n")
         
+        memoTitle = String(textArray[0])
+        memoContents = textArray.filter{ $0 != textArray[0] }.joined(separator: "\n")
+        
+        return true
     }
     
 }
-

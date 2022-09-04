@@ -18,8 +18,14 @@ class WalkThroughViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        mainView.mainButton.addTarget(self, action: #selector(moveToMemo), for: .touchUpInside)
     }
     
-    //
+    @objc func moveToMemo(){
+        
+        UserDefaults.standard.set(true, forKey: "isFirst")
+        
+        self.dismiss(animated: true)
+    }
     
 }
