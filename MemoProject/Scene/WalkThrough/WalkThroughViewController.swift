@@ -7,7 +7,7 @@
 
 import UIKit
 
-class WalkThroughViewController: BaseViewController {
+final class WalkThroughViewController: BaseViewController {
     
     var mainView = WalkThroughView()
     

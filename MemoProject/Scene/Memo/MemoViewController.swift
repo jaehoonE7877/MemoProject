@@ -10,7 +10,7 @@ import RealmSwift
 import Toast
 //NumberFormatter, DateFormatter
 
-class MemoViewController: BaseViewController {
+final class MemoViewController: BaseViewController {
     
     lazy var tableView = UITableView().then {
         $0.rowHeight = 64
@@ -23,9 +23,7 @@ class MemoViewController: BaseViewController {
     
     
     let repository = UserMemoRepository()
-    
-    var attributeString = NSMutableAttributedString(string: "")
-    
+        
     var isFiltering: Bool {
         let searchController = self.navigationItem.searchController
         let isActive = searchController?.isActive ?? false
@@ -34,18 +32,13 @@ class MemoViewController: BaseViewController {
     }
     
     var filteredItem: Results<UserMemo>!
+    var filteredText : String?
     
     var tasks: Results<UserMemo>! {
         didSet {
             self.tableView.reloadData()
             self.navigationItem.title = "\(getNumFormat(for: tasks.count))개의 메모"
         }
-    }
-    
-    func getNumFormat(for number: Int) -> String {
-        let numberFormat = NumberFormatter()
-        numberFormat.numberStyle = .decimal
-        return numberFormat.string(for: number) ?? "0"
     }
     
     override func viewDidLoad() {
@@ -55,7 +48,6 @@ class MemoViewController: BaseViewController {
         if !UserDefaults.standard.bool(forKey: "isFirst") {
             self.present(WalkThroughViewController(), animated: true)
         }
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -84,6 +76,7 @@ class MemoViewController: BaseViewController {
         }
         
     }
+
     
     func setSearchController(){
         let searchController = UISearchController(searchResultsController: nil)
@@ -97,7 +90,8 @@ class MemoViewController: BaseViewController {
         self.navigationItem.searchController = searchController
         self.navigationItem.hidesSearchBarWhenScrolling = false
         self.navigationController?.navigationBar.prefersLargeTitles = true
-        self.navigationController?.navigationBar.backgroundColor = .systemGray6
+        self.navigationController?.navigationBar.titleTextAttributes = [.foregroundColor : UIColor.white]
+        naviBackground()
     }
     
     func setToolbar(){
@@ -128,11 +122,9 @@ class MemoViewController: BaseViewController {
         tasks = repository.fetchMemo()
     }
     
-    
 }
 
 extension MemoViewController: UITableViewDelegate, UITableViewDataSource {
-    
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return isFiltering || !repository.fetchIsFixed() ? 1 : 2
@@ -141,10 +133,11 @@ extension MemoViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
         let headerView = HeaderView()
-        
+        // searchController is on
         if isFiltering {
             headerView.headerLabel.text = "\(getNumFormat(for: filteredItem.count))개 찾음"
         } else {
+        // searchController is off
                 if !repository.fetchIsFixed() {
                     if section == 0 {
                         headerView.headerLabel.text = "메모"
@@ -165,7 +158,7 @@ extension MemoViewController: UITableViewDelegate, UITableViewDataSource {
         
         var memoList = [UserMemo]()
         var fixList = [UserMemo]()
-        
+
         for item in tasks {
             if item.isFixed {
                 fixList.append(item)
@@ -173,6 +166,7 @@ extension MemoViewController: UITableViewDelegate, UITableViewDataSource {
                 memoList.append(item)
             }
         }
+        
         if isFiltering {
             return filteredItem.count
         } else {
@@ -189,7 +183,7 @@ extension MemoViewController: UITableViewDelegate, UITableViewDataSource {
         
         var memoList = [UserMemo]()
         var fixList = [UserMemo]()
-        
+
         for item in tasks {
             if item.isFixed {
                 fixList.append(item)
@@ -200,6 +194,9 @@ extension MemoViewController: UITableViewDelegate, UITableViewDataSource {
         
         if isFiltering {
             cell.setData(data: filteredItem[indexPath.row])
+            cell.titleLabel.attributedText = changeFilteredColor(totalString: filteredItem[indexPath.row].memoTitle, searchString: filteredText ?? "")
+            cell.contentsLabel.attributedText = changeFilteredColor(totalString: filteredItem[indexPath.row].memoContents ?? "", searchString: filteredText ?? "")
+            
         } else {
             if fixList.count == 0 {
                 cell.setData(data: memoList[indexPath.row])
@@ -218,7 +215,7 @@ extension MemoViewController: UITableViewDelegate, UITableViewDataSource {
         
         var memoList = [UserMemo]()
         var fixList = [UserMemo]()
-        
+
         for item in tasks {
             if item.isFixed {
                 fixList.append(item)
@@ -226,7 +223,6 @@ extension MemoViewController: UITableViewDelegate, UITableViewDataSource {
                 memoList.append(item)
             }
         }
-         
         let isFixed = UIContextualAction(style: .normal, title: nil) { action, view, completionHandler in
             //분기 처리 해야될 부분 -> 1. 맨 처음 => section0만 존재, 만약 section0, 1 존재
             if fixList.count == 0 {
@@ -240,8 +236,8 @@ extension MemoViewController: UITableViewDelegate, UITableViewDataSource {
                     self.view.makeToast("5개 까지만 저장할 수 있지롱^~^")
                 }
             }
-            
             self.tableView.reloadData()
+
         }
         var image = ""
         if fixList.count == 0 {
@@ -260,6 +256,7 @@ extension MemoViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         
         let delete = UIContextualAction(style: .destructive, title: nil) { action, view, comletionHandler in
+            
             self.repository.deleteMemo(item: self.tasks[indexPath.row])
             self.fetchRealm()
         }
@@ -273,7 +270,7 @@ extension MemoViewController: UITableViewDelegate, UITableViewDataSource {
         
         var memoList = [UserMemo]()
         var fixList = [UserMemo]()
-                
+
         for item in tasks {
             if item.isFixed {
                 fixList.append(item)
@@ -307,18 +304,26 @@ extension MemoViewController: UISearchBarDelegate, UISearchResultsUpdating {
         guard let text = searchController.searchBar.text?.lowercased() else { return }
         
         filteredItem = self.repository.fetchMemo().where { $0.memoTitle.contains(text) || $0.memoContents.contains(text) }
-        
-//        attributeString = NSMutableAttributedString(string: text)
-//        attributeString.addAttribute(.foregroundColor, value: UIColor.orange, range: (text as NSString).range(of: text) )
+        filteredText = searchController.searchBar.text?.lowercased()
         
         DispatchQueue.main.async {
             self.tableView.reloadData()
         }
     }
-    
-//    func myLabelChangeColor(_ text: String, range: NSRange){
-//
-//        attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.orange, range: (text as NSString).range(of: text) )
-//            myLabel.attributedText = attributedString
-//    }
+        
+    func changeFilteredColor(totalString: String, searchString: String) -> NSMutableAttributedString{
+        let attrStr = NSMutableAttributedString(string: totalString)
+        var range = NSRange(location: 0, length: totalString.count)
+        var rangeArray = [NSRange]()
+        
+        while(range.location != NSNotFound){
+            range = (attrStr.string as NSString).range(of: searchString, options: .caseInsensitive, range: range)
+            rangeArray.append(range)
+            if (range.location != NSNotFound){
+                range = NSRange(location: range.location + range.length, length: totalString.count - (range.location + range.length))
+            }
+        }
+        rangeArray.forEach { attrStr.addAttribute(.foregroundColor, value: UIColor.orange, range: $0) }
+        return attrStr
+    }
 }

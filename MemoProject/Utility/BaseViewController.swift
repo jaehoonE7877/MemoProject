@@ -27,4 +27,16 @@ class BaseViewController: UIViewController {
         alert.addAction(ok)
         present(alert, animated: true)
     }
+    
+    func getNumFormat(for number: Int) -> String {
+        let numberFormat = NumberFormatter()
+        numberFormat.numberStyle = .decimal
+        return numberFormat.string(for: number) ?? "0"
+    }
+    
+    func naviBackground() {
+        let naviBarApperance = UINavigationBarAppearance()
+        naviBarApperance.backgroundColor = .defaultBackgroundColor
+        self.navigationController?.navigationBar.scrollEdgeAppearance = naviBarApperance
+    }
 }

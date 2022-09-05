@@ -33,6 +33,7 @@ class MemoTableViewCell: BaseTableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        self.contentView.backgroundColor = .defaultBackgroundColor
     }
     
     required init?(coder: NSCoder) {
@@ -67,7 +68,6 @@ class MemoTableViewCell: BaseTableViewCell {
     }
     
     override func configureCell() {
-        contentView.backgroundColor = .systemGray6
         [titleLabel, stackView].forEach { contentView.addSubview($0) }
     }
     

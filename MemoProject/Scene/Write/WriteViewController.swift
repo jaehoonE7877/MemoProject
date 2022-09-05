@@ -7,13 +7,16 @@
 
 import UIKit
 
-class WriteViewController: BaseViewController{
+final class WriteViewController: BaseViewController{
     
     lazy var textView = UITextView().then {
-        $0.textColor = Constants.BaseColor.text
+        $0.backgroundColor = Constants.BaseColor.background
+        $0.textColor = .defaultTextColor
         $0.font = .boldSystemFont(ofSize: 16)
         $0.delegate = self
     }
+    
+    
     
     let repository = UserMemoRepository()
     var memoTitle: String?
@@ -48,6 +51,10 @@ class WriteViewController: BaseViewController{
     }
     
     override func configure() {
+        let swipeRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(swipeAction(_:)))
+        swipeRecognizer.direction = .left
+        self.view.addGestureRecognizer(swipeRecognizer)
+        
         view.addSubview(textView)
     }
     
@@ -59,6 +66,7 @@ class WriteViewController: BaseViewController{
     }
     
     func setNavi(){
+        naviBackground()
         
         let shareButton = UIBarButtonItem(image: UIImage(systemName: "square.and.arrow.up"), style: .plain, target: self, action: #selector(shareButtonTapped))
         let saveButton = UIBarButtonItem(title: "완료", style: .plain, target: self, action: #selector(saveButtonTapped))
@@ -76,6 +84,13 @@ class WriteViewController: BaseViewController{
         
         self.navigationController?.popViewController(animated: true)
 
+    }
+    
+    @objc func swipeAction(_ sender: UISwipeGestureRecognizer){
+        if sender.direction == .left{
+            self.navigationController?.popViewController(animated: true)
+        }
+        
     }
     
     
@@ -98,3 +113,4 @@ extension WriteViewController: UITextViewDelegate {
     }
     
 }
+
