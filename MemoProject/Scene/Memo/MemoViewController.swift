@@ -24,6 +24,8 @@ class MemoViewController: BaseViewController {
     
     let repository = UserMemoRepository()
     
+    var attributeString = NSMutableAttributedString(string: "")
+    
     var isFiltering: Bool {
         let searchController = self.navigationItem.searchController
         let isActive = searchController?.isActive ?? false
@@ -31,16 +33,19 @@ class MemoViewController: BaseViewController {
         return isActive && isSearchBarHasText
     }
     
-    var filteredTitle: [String] = []
-    var filteredContents: [String] = []
+    var filteredItem: Results<UserMemo>!
     
     var tasks: Results<UserMemo>! {
         didSet {
             self.tableView.reloadData()
-            let numFormat = NumberFormatter()
-            numFormat.numberStyle = .decimal
-            self.navigationItem.title = "\(format(for: tasks.count))개의 메모"
+            self.navigationItem.title = "\(getNumFormat(for: tasks.count))개의 메모"
         }
+    }
+    
+    func getNumFormat(for number: Int) -> String {
+        let numberFormat = NumberFormatter()
+        numberFormat.numberStyle = .decimal
+        return numberFormat.string(for: number) ?? "0"
     }
     
     override func viewDidLoad() {
@@ -123,11 +128,6 @@ class MemoViewController: BaseViewController {
         tasks = repository.fetchMemo()
     }
     
-    func format(for number: Int) -> String {
-        let numberFormat = NumberFormatter()
-        numberFormat.numberStyle = .decimal
-        return numberFormat.string(for: number) ?? "0"
-    }
     
 }
 
@@ -135,7 +135,7 @@ extension MemoViewController: UITableViewDelegate, UITableViewDataSource {
     
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return repository.fetchIsFixed() ? 2 : 1
+        return isFiltering || !repository.fetchIsFixed() ? 1 : 2
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -143,26 +143,26 @@ extension MemoViewController: UITableViewDelegate, UITableViewDataSource {
         let headerView = HeaderView()
         
         if isFiltering {
-            if section == 0 {
-                headerView.headerLabel.text = "0개 찾음"
-            } else {
-                if repository.fetchIsFixed() {
+            headerView.headerLabel.text = "\(getNumFormat(for: filteredItem.count))개 찾음"
+        } else {
+                if !repository.fetchIsFixed() {
+                    if section == 0 {
+                        headerView.headerLabel.text = "메모"
+                    }
+                } else {
                     if section == 0 {
                         headerView.headerLabel.text = "고정된 메모"
                     } else if section == 1 {
                         headerView.headerLabel.text = "메모"
                     }
-                } else {
-                    if section == 0 {
-                        headerView.headerLabel.text = "메모"
-                    }
                 }
-            }
+            
         }
         return headerView
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
         var memoList = [UserMemo]()
         var fixList = [UserMemo]()
         
@@ -173,13 +173,15 @@ extension MemoViewController: UITableViewDelegate, UITableViewDataSource {
                 memoList.append(item)
             }
         }
-        
-        if fixList.count == 0 {
-            return memoList.count
+        if isFiltering {
+            return filteredItem.count
         } else {
-            return section == 0 ? fixList.count : memoList.count
+            if fixList.count == 0 {
+                return memoList.count
+            } else {
+                return section == 0 ? fixList.count : memoList.count
+            }
         }
-        
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -196,16 +198,19 @@ extension MemoViewController: UITableViewDelegate, UITableViewDataSource {
             }
         }
         
-        if fixList.count == 0 {
-            cell.setData(data: memoList[indexPath.row])
+        if isFiltering {
+            cell.setData(data: filteredItem[indexPath.row])
         } else {
-            if indexPath.section == 0 {
-                cell.setData(data: fixList[indexPath.row])
-            } else if indexPath.section == 1 {
+            if fixList.count == 0 {
                 cell.setData(data: memoList[indexPath.row])
+            } else {
+                if indexPath.section == 0 {
+                    cell.setData(data: fixList[indexPath.row])
+                } else if indexPath.section == 1 {
+                    cell.setData(data: memoList[indexPath.row])
+                }
             }
         }
-        
         return cell
     }
     
@@ -301,15 +306,19 @@ extension MemoViewController: UISearchBarDelegate, UISearchResultsUpdating {
         
         guard let text = searchController.searchBar.text?.lowercased() else { return }
         
-        let memoTitleList: [String] = self.repository.fetchMemo().map { $0.memoTitle }
-        //let memoContentsList: [String?] = self.repository.fetchMemo().map { $0.memoContents }
-        self.filteredTitle = memoTitleList.filter{ $0.lowercased().contains(text) }
-        //self.filteredContents = memoContentsList.filter{ $0.lowercased().contains(text) }
-              
+        filteredItem = self.repository.fetchMemo().where { $0.memoTitle.contains(text) || $0.memoContents.contains(text) }
+        
+//        attributeString = NSMutableAttributedString(string: text)
+//        attributeString.addAttribute(.foregroundColor, value: UIColor.orange, range: (text as NSString).range(of: text) )
         
         DispatchQueue.main.async {
             self.tableView.reloadData()
         }
     }
     
+//    func myLabelChangeColor(_ text: String, range: NSRange){
+//
+//        attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.orange, range: (text as NSString).range(of: text) )
+//            myLabel.attributedText = attributedString
+//    }
 }
