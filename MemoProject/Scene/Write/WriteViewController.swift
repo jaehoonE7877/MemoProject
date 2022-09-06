@@ -18,7 +18,7 @@ final class WriteViewController: BaseViewController{
     
     
     
-    let repository = UserMemoRepository()
+    private let repository = UserMemoRepository()
     var memoTitle: String?
     var memoContents: String?
     var memoTask: UserMemo?
@@ -81,16 +81,13 @@ final class WriteViewController: BaseViewController{
     }
     //realm
     @objc func saveButtonTapped(){
-        
         self.navigationController?.popViewController(animated: true)
-
     }
     
     @objc func swipeAction(_ sender: UISwipeGestureRecognizer){
         if sender.direction == .left{
             self.navigationController?.popViewController(animated: true)
         }
-        
     }
     
     

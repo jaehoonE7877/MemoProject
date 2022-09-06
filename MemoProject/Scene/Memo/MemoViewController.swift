@@ -12,7 +12,7 @@ import Toast
 
 final class MemoViewController: BaseViewController {
     
-    lazy var tableView = UITableView().then {
+    lazy var tableView = UITableView(frame: CGRect(x: 0, y: 0, width: 300, height: 300), style: .insetGrouped).then {
         $0.rowHeight = 64
         $0.sectionHeaderHeight = 56
         $0.backgroundColor = Constants.BaseColor.background
@@ -22,7 +22,7 @@ final class MemoViewController: BaseViewController {
     }
     
     
-    let repository = UserMemoRepository()
+    private let repository = UserMemoRepository()
         
     var isFiltering: Bool {
         let searchController = self.navigationItem.searchController
@@ -32,7 +32,9 @@ final class MemoViewController: BaseViewController {
     }
     
     var filteredItem: Results<UserMemo>!
-    var filteredText : String?
+    var filteredText: String?
+    var fixedList: Results<UserMemo>!
+    var memoList: Results<UserMemo>!
     
     var tasks: Results<UserMemo>! {
         didSet {
@@ -65,7 +67,6 @@ final class MemoViewController: BaseViewController {
         setToolbar()
         fetchRealm()
     }
-    
     
     
     override func setConstraints() {
@@ -122,6 +123,10 @@ final class MemoViewController: BaseViewController {
         tasks = repository.fetchMemo()
     }
     
+    func devideByIsFixed(){
+        memoList = repository.fetchMemo().where{ $0.isFixed == false }
+        fixedList = repository.fetchMemo().where{ $0.isFixed == true }
+    }
 }
 
 extension MemoViewController: UITableViewDelegate, UITableViewDataSource {
@@ -156,24 +161,15 @@ extension MemoViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        var memoList = [UserMemo]()
-        var fixList = [UserMemo]()
-
-        for item in tasks {
-            if item.isFixed {
-                fixList.append(item)
-            } else {
-                memoList.append(item)
-            }
-        }
+        devideByIsFixed()
         
         if isFiltering {
             return filteredItem.count
         } else {
-            if fixList.count == 0 {
+            if fixedList.count == 0 {
                 return memoList.count
             } else {
-                return section == 0 ? fixList.count : memoList.count
+                return section == 0 ? fixedList.count : memoList.count
             }
         }
     }
@@ -181,16 +177,7 @@ extension MemoViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: MemoTableViewCell.reuseIdentifier, for: indexPath) as? MemoTableViewCell else { return UITableViewCell()}
         
-        var memoList = [UserMemo]()
-        var fixList = [UserMemo]()
-
-        for item in tasks {
-            if item.isFixed {
-                fixList.append(item)
-            } else {
-                memoList.append(item)
-            }
-        }
+        devideByIsFixed()
         
         if isFiltering {
             cell.setData(data: filteredItem[indexPath.row])
@@ -198,14 +185,10 @@ extension MemoViewController: UITableViewDelegate, UITableViewDataSource {
             cell.contentsLabel.attributedText = changeFilteredColor(totalString: filteredItem[indexPath.row].memoContents ?? "", searchString: filteredText ?? "")
             
         } else {
-            if fixList.count == 0 {
+            if fixedList.count == 0 {
                 cell.setData(data: memoList[indexPath.row])
             } else {
-                if indexPath.section == 0 {
-                    cell.setData(data: fixList[indexPath.row])
-                } else if indexPath.section == 1 {
-                    cell.setData(data: memoList[indexPath.row])
-                }
+                indexPath.section == 0 ? cell.setData(data: fixedList[indexPath.row]) : cell.setData(data: memoList[indexPath.row])
             }
         }
         return cell
@@ -213,38 +196,47 @@ extension MemoViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         
-        var memoList = [UserMemo]()
-        var fixList = [UserMemo]()
-
-        for item in tasks {
-            if item.isFixed {
-                fixList.append(item)
-            } else {
-                memoList.append(item)
-            }
-        }
+        devideByIsFixed()
+        
         let isFixed = UIContextualAction(style: .normal, title: nil) { action, view, completionHandler in
+            print(indexPath.description)
             //분기 처리 해야될 부분 -> 1. 맨 처음 => section0만 존재, 만약 section0, 1 존재
-            if fixList.count == 0 {
-                self.repository.updateIsFixed(item: memoList[indexPath.row])
+            //isFiltering 넣고
+            if self.isFiltering {
+                self.repository.updateIsFixed(item: self.filteredItem[indexPath.row])
             } else {
-                if indexPath.section == 0 {
-                    self.repository.updateIsFixed(item: fixList[indexPath.row])
-                } else if indexPath.section == 1, fixList.count < 5{
-                    self.repository.updateIsFixed(item: memoList[indexPath.row])
+                if self.fixedList.count == 0 {
+                    self.repository.updateIsFixed(item: self.memoList[indexPath.row])
                 } else {
-                    self.view.makeToast("5개 까지만 저장할 수 있지롱^~^")
+                    if indexPath.section == 0 {
+                        self.repository.updateIsFixed(item: self.fixedList[indexPath.row])
+                    } else if indexPath.section == 1, self.fixedList.count < 5{
+                        self.repository.updateIsFixed(item: self.memoList[indexPath.row])
+                    } else {
+                        self.view.makeToast("5개 까지만 저장할 수 있지롱^~^")
+                    }
                 }
+                
             }
-            self.tableView.reloadData()
-
+            self.fetchRealm()
         }
+        
         var image = ""
-        if fixList.count == 0 {
-            image = "pin.fill"
+        
+        if isFiltering {
+            if filteredItem[indexPath.row].isFixed {
+                image = "pin.slash.fill"
+            } else {
+                image = "pin.fill"
+            }
         } else {
-            image = indexPath.section == 0 ? "pin.slash.fill" : "pin.fill"
+            if fixedList.count == 0 {
+                image = "pin.fill"
+            } else {
+                image = indexPath.section == 0 ? "pin.slash.fill" : "pin.fill"
+            }
         }
+        
         isFixed.image = UIImage(systemName: image)
         isFixed.backgroundColor = .orange
         let swipeConfig = UISwipeActionsConfiguration(actions: [isFixed])
@@ -254,10 +246,14 @@ extension MemoViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        
+                
         let delete = UIContextualAction(style: .destructive, title: nil) { action, view, comletionHandler in
             
-            self.repository.deleteMemo(item: self.tasks[indexPath.row])
+            if self.isFiltering {
+                self.repository.deleteMemo(item: self.filteredItem[indexPath.row])
+            } else {
+                self.repository.deleteMemo(item: self.tasks[indexPath.row])
+            }
             self.fetchRealm()
         }
         delete.backgroundColor = .red
@@ -268,23 +264,15 @@ extension MemoViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        var memoList = [UserMemo]()
-        var fixList = [UserMemo]()
-
-        for item in tasks {
-            if item.isFixed {
-                fixList.append(item)
-            } else {
-                memoList.append(item)
-            }
-        }
+        devideByIsFixed()
+        
         let vc = WriteViewController()
         
-        if fixList.count == 0 {
+        if fixedList.count == 0 {
             vc.memoTask = memoList[indexPath.row]
         } else {
             if indexPath.section == 0 {
-                vc.memoTask = fixList[indexPath.row]
+                vc.memoTask = fixedList[indexPath.row]
             } else if indexPath.section == 1{
                 vc.memoTask = memoList[indexPath.row]
             }

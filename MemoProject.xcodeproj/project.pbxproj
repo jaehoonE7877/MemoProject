@@ -14,6 +14,7 @@
 		252F7D5E28C46C140099337A /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252F7D5D28C46C140099337A /* HeaderView.swift */; };
 		252F7D6428C5B8630099337A /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252F7D6328C5B8620099337A /* UIColor+Extension.swift */; };
 		253B49FF28C209D000C3BE8D /* UserMemoRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 253B49FE28C209D000C3BE8D /* UserMemoRepository.swift */; };
+		254712ED28C72D8B0049D952 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 254712EC28C72D8B0049D952 /* ViewModel.swift */; };
 		25D7790E28BF4A3200563EF0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25D7790D28BF4A3200563EF0 /* AppDelegate.swift */; };
 		25D7791028BF4A3200563EF0 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25D7790F28BF4A3200563EF0 /* SceneDelegate.swift */; };
 		25D7791228BF4A3200563EF0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25D7791128BF4A3200563EF0 /* ViewController.swift */; };
@@ -43,6 +44,7 @@
 		252F7D5D28C46C140099337A /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
 		252F7D6328C5B8620099337A /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
 		253B49FE28C209D000C3BE8D /* UserMemoRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserMemoRepository.swift; sourceTree = "<group>"; };
+		254712EC28C72D8B0049D952 /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
 		25D7790A28BF4A3200563EF0 /* MemoProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MemoProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		25D7790D28BF4A3200563EF0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		25D7790F28BF4A3200563EF0 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -123,6 +125,7 @@
 				25D7791628BF4A3300563EF0 /* Assets.xcassets */,
 				25D7791828BF4A3300563EF0 /* LaunchScreen.storyboard */,
 				25D7791B28BF4A3300563EF0 /* Info.plist */,
+				254712EC28C72D8B0049D952 /* ViewModel.swift */,
 			);
 			path = MemoProject;
 			sourceTree = "<group>";
@@ -297,6 +300,7 @@
 				25D7793D28BF55CC00563EF0 /* ReusableViewProtocol.swift in Sources */,
 				25D7793228BF52EE00563EF0 /* Color.swift in Sources */,
 				25D7793428BF52F900563EF0 /* Constant.swift in Sources */,
+				254712ED28C72D8B0049D952 /* ViewModel.swift in Sources */,
 				25D7794128BF571200563EF0 /* WalkThroughViewController.swift in Sources */,
 				25D7790E28BF4A3200563EF0 /* AppDelegate.swift in Sources */,
 				252F7D6428C5B8630099337A /* UIColor+Extension.swift in Sources */,
