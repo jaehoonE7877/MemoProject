@@ -41,4 +41,5 @@ class BaseViewController: UIViewController {
         naviBarApperance.backgroundColor = .defaultBackgroundColor
         self.navigationController?.navigationBar.scrollEdgeAppearance = naviBarApperance
     }
+    
 }

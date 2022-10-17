@@ -13,10 +13,11 @@ class UserMemoRepository {
     let localRealm = try! Realm()
     
     // 메모 하나 작성했을때(WriteVC에서 사용)
-    func addMemo(item: UserMemo){
+    func addMemo(item: UserMemo, detail: DetailMemo){
         do {
             try localRealm.write{
                 localRealm.add(item)
+                item.detailMemo.append(detail)
             }
         } catch {
             print(error)
@@ -30,6 +31,7 @@ class UserMemoRepository {
     func deleteMemo(item: UserMemo){
         do {
             try localRealm.write{
+                localRealm.delete(item.detailMemo)
                 localRealm.delete(item)
             }
         } catch {
