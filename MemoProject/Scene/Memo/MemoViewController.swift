@@ -128,7 +128,7 @@ final class MemoViewController: BaseViewController {
         fixedList = repository.fetchMemo().where{ $0.isFixed == true }
     }
 }
-
+//MARK: TableView Delegate, DataSource
 extension MemoViewController: UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {

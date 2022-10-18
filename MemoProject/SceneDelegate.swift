@@ -11,14 +11,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     var window: UIWindow?
     
-    
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         
         guard let scene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: scene)
         
         
-        let vc = MemoViewController()
+        //let vc = MemoViewController()
+        @available(iOS 14.0, *)
+        let vc = HomeViewController()
         let nav = UINavigationController(rootViewController: vc)
         
         window?.rootViewController = nav
