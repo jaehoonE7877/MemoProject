@@ -45,7 +45,7 @@ class MemoTableViewCell: BaseTableViewCell {
     func setData(data: UserMemo){
         
         titleLabel.text = data.memoTitle
-        dateLabel.text = getDataFormat(date: data.memoDate)
+        dateLabel.text = getDateFormat(date: data.memoDate)
         if data.memoContents == "" {
             contentsLabel.text = "추가 텍스트 없음"
         } else {
@@ -53,18 +53,19 @@ class MemoTableViewCell: BaseTableViewCell {
         }
     }
     
-    func getDataFormat(date: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.locale = Locale(identifier: "ko-KR")
-        formatter.dateFormat = "yyyy년 MM월 dd일"
-        if date > date.addingTimeInterval(-86400) {
-            formatter.dateFormat = "a hh:mm"
-        } else if date <= date.addingTimeInterval(-86400) && date > date.addingTimeInterval(-(86400 * 7)) {
-            formatter.dateFormat = "EEEE"
+    private func getDateFormat(date: Date) -> String {
+        
+        var dateType: DateType = .all
+        
+        if Calendar.current.isDateInToday(date) {
+            dateType = .today
+        } else if Date.isDateInThisWeek(date) {
+            dateType = .thisWeek
         } else {
-            formatter.dateFormat = "yyyy. MM. dd a hh:mm"
+            dateType = .all
         }
-        return formatter.string(from: date)
+        
+        return DateType.toString(date, to: dateType)
     }
     
     override func configureCell() {

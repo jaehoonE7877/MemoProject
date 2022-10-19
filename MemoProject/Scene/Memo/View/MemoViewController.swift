@@ -12,6 +12,8 @@ import Toast
 
 final class MemoViewController: BaseViewController {
     
+    private let viewModel = MemoViewModel()
+    
     lazy var tableView = UITableView(frame: CGRect(x: 0, y: 0, width: 300, height: 300), style: .insetGrouped).then {
         $0.rowHeight = 64
         $0.sectionHeaderHeight = 56
@@ -62,7 +64,6 @@ final class MemoViewController: BaseViewController {
         view.addSubview(tableView)
         self.navigationController?.isToolbarHidden = false
         
-        
         setSearchController()
         setToolbar()
         fetchRealm()
@@ -72,8 +73,7 @@ final class MemoViewController: BaseViewController {
     override func setConstraints() {
         
         tableView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(20)
-            make.top.bottom.equalTo(view.safeAreaLayoutGuide)
+            make.edges.equalToSuperview()
         }
         
     }
@@ -128,6 +128,7 @@ final class MemoViewController: BaseViewController {
         fixedList = repository.fetchMemo().where{ $0.isFixed == true }
     }
 }
+
 //MARK: TableView Delegate, DataSource
 extension MemoViewController: UITableViewDelegate, UITableViewDataSource {
     

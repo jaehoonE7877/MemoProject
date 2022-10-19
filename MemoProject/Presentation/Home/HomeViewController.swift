@@ -9,13 +9,11 @@ import UIKit
 
 import RealmSwift
 
-@available(iOS 14.0, *)
 final class HomeViewController: BaseViewController {
     
     //MARK: Property, View
     lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: configureCellLayout()).then {
         $0.delegate = self
-        $0.dataSource = self
         $0.translatesAutoresizingMaskIntoConstraints = false
     }
     
@@ -26,8 +24,8 @@ final class HomeViewController: BaseViewController {
     }
     
     private let localRealm = try! Realm()
-    
-    var cellRegisteration: UICollectionView.CellRegistration<UICollectionViewListCell, UserMemo>!
+        
+    private var dataSource: UICollectionViewDiffableDataSource<Int, UserMemo>!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,6 +34,7 @@ final class HomeViewController: BaseViewController {
         
         configureCollectionView()
     }
+    
     override func configure() {
         view.addSubview(collectionView)
     }
@@ -58,7 +57,7 @@ final class HomeViewController: BaseViewController {
     
     private func configureCollectionView() {
         
-        cellRegisteration = UICollectionView.CellRegistration(handler: { cell, indexPath, itemIdentifier in
+       let cellRegisteration = UICollectionView.CellRegistration<UICollectionViewListCell, UserMemo>(handler: { cell, indexPath, itemIdentifier in
             
             var content = cell.defaultContentConfiguration()
             
@@ -67,7 +66,7 @@ final class HomeViewController: BaseViewController {
             
             guard let memoContents = itemIdentifier.memoContents else { return }
             
-            let dateString = self.getDateFormat(date: itemIdentifier.memoDate)
+           let dateString = self.getDateFormat(date: itemIdentifier.memoDate)
             content.secondaryText = "\(dateString) \(memoContents)"
             content.secondaryTextProperties.numberOfLines = 1
             content.prefersSideBySideTextAndSecondaryText = false
@@ -76,73 +75,44 @@ final class HomeViewController: BaseViewController {
             cell.contentConfiguration = content
         })
         
+        dataSource = UICollectionViewDiffableDataSource(collectionView: collectionView, cellProvider: { collectionView, indexPath, itemIdentifier in
+            
+            let cell = collectionView.dequeueConfiguredReusableCell(using: cellRegisteration, for: indexPath, item: itemIdentifier)
+            
+            return cell
+        })
+        let list = Array(tasks)
+        
+        var snapshot = NSDiffableDataSourceSnapshot<Int, UserMemo>()
+        snapshot.appendSections([0])
+        snapshot.appendItems(list)
+        self.dataSource.apply(snapshot)
+        
     }
+    
+    
+}
+
+extension HomeViewController: UICollectionViewDelegate {
+    
+    
+}
+
+extension HomeViewController {
     
     private func getDateFormat(date: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.locale = Locale(identifier: "ko-KR")
-        formatter.dateFormat = "yyyy년 MM월 dd일"
-        if date > date.addingTimeInterval(-86400) {
-            formatter.dateFormat = "a hh:mm"
-        } else if date <= date.addingTimeInterval(-86400) && date > date.addingTimeInterval(-(86400 * 7)) {
-            formatter.dateFormat = "EEEE"
+        
+        var dateType: DateType = .all
+        
+        if Calendar.current.isDateInToday(date) {
+            dateType = .today
+        } else if Date.isDateInThisWeek(date) {
+            dateType = .thisWeek
         } else {
-            formatter.dateFormat = "yyyy. MM. dd a hh:mm"
+            dateType = .all
         }
-        return formatter.string(from: date)
-    }
-    
-    
-}
-
-@available(iOS 14.0, *)
-extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSource {
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        tasks.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let item = tasks[indexPath.item]
-        
-        let cell = collectionView.dequeueConfiguredReusableCell(using: cellRegisteration, for: indexPath, item: item)
-        
-        return cell
-        
-    }
-    
-//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        <#code#>
-//    }
-    
-}
-
-enum DateType {
-    case today
-    case thisWeek
-    case all
-}
-
-extension DateType {
-    
-    var format: String {
-        switch self {
-        case .today:
-            return "a hh:mm"
-        case .thisWeek:
-            return "EEEE"
-        case .all:
-            return "yyyy. MM. dd a hh:mm"
-        }
-    }
-    
-    static func toString(_ date: Date, to dateFormat: DateType) -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.locale = Locale(identifier: "ko_KR")
-        dateFormatter.timeZone = TimeZone(abbreviation: "KST")
-        dateFormatter.dateFormat = dateFormat.format
-        return dateFormatter.string(from: date)
+        return DateType.toString(date, to: dateType)
     }
     
 }
