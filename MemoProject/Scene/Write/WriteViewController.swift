@@ -16,8 +16,6 @@ final class WriteViewController: BaseViewController{
         $0.delegate = self
     }
     
-    
-    
     private let repository = UserMemoRepository()
     var memoTitle: String?
     var memoContents: String?
@@ -29,7 +27,7 @@ final class WriteViewController: BaseViewController{
         setNavi()
         
         guard let memoTask = memoTask else { return }
-        textView.text = "\(String(describing: memoTask.memoTitle))\n\(String(describing: memoTask.memoContents ?? ""))"
+        textView.text = "\(String(describing: memoTask.title))\n\(String(describing: memoTask.contents ?? ""))"
         
         
     }
@@ -39,12 +37,12 @@ final class WriteViewController: BaseViewController{
         
         
         guard let memoTitle = memoTitle, let memoContents = memoContents else { return }
-        let userMemo = UserMemo(memoTitle: memoTitle, memoContents: memoContents, memoDate: Date(), isFixed: memoTask?.isFixed ?? false)
+        let userMemo = UserMemo(title: memoTitle, contents: memoContents, writtenDate: Date(), isFixed: memoTask?.isFixed ?? false)
         let detailTask = DetailMemo(content: "List 연습해보자\(Int.random(in: 1...5))", date: Date())
         repository.addMemo(item: userMemo, detail: detailTask)
         
         guard let memoTask = memoTask else { return }
-        if memoTask.memoContents == memoContents {
+        if memoTask.contents == memoContents {
             return
         } else {
             repository.deleteMemo(item: memoTask)

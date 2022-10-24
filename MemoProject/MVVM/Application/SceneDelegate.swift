@@ -19,7 +19,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let vc = MemoViewController()
         @available(iOS 14.0, *)
-        //let vc = HomeViewController()
+//        let vc = HomeViewController()
         let nav = UINavigationController(rootViewController: vc)
         
         window?.rootViewController = nav

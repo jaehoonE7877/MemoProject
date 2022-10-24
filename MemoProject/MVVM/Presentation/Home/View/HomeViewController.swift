@@ -9,6 +9,7 @@ import UIKit
 
 import RealmSwift
 
+// searchBar, tabBar 추가하기
 final class HomeViewController: BaseViewController {
     
     //MARK: Property, View
@@ -25,7 +26,9 @@ final class HomeViewController: BaseViewController {
     
     private let localRealm = try! Realm()
         
-    private var dataSource: UICollectionViewDiffableDataSource<Int, UserMemo>!
+    private var dataSource: DataSource!
+    private typealias DataSource = UICollectionViewDiffableDataSource<Int, UserMemo>
+    private typealias Snapshot = NSDiffableDataSourceSnapshot<Int, UserMemo>
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,20 +57,19 @@ final class HomeViewController: BaseViewController {
         return layout
     }
     
-    
     private func configureCollectionView() {
         
        let cellRegisteration = UICollectionView.CellRegistration<UICollectionViewListCell, UserMemo>(handler: { cell, indexPath, itemIdentifier in
             
             var content = cell.defaultContentConfiguration()
             
-            content.text = itemIdentifier.memoTitle
+            content.text = itemIdentifier.title
             content.textProperties.font = .boldSystemFont(ofSize: 16)
             
-            guard let memoContents = itemIdentifier.memoContents else { return }
+            guard let memoContents = itemIdentifier.contents else { return }
             
-           let dateString = self.getDateFormat(date: itemIdentifier.memoDate)
-            content.secondaryText = "\(dateString) \(memoContents)"
+           let dateString = self.getDateFormat(date: itemIdentifier.writtenDate)
+           content.secondaryText = "\(dateString) \(memoContents)"
             content.secondaryTextProperties.numberOfLines = 1
             content.prefersSideBySideTextAndSecondaryText = false
             content.secondaryTextProperties.font = .systemFont(ofSize: 13)
@@ -75,7 +77,7 @@ final class HomeViewController: BaseViewController {
             cell.contentConfiguration = content
         })
         
-        dataSource = UICollectionViewDiffableDataSource(collectionView: collectionView, cellProvider: { collectionView, indexPath, itemIdentifier in
+        self.dataSource = DataSource(collectionView: collectionView, cellProvider: { collectionView, indexPath, itemIdentifier in
             
             let cell = collectionView.dequeueConfiguredReusableCell(using: cellRegisteration, for: indexPath, item: itemIdentifier)
             
@@ -83,7 +85,7 @@ final class HomeViewController: BaseViewController {
         })
         let list = Array(tasks)
         
-        var snapshot = NSDiffableDataSourceSnapshot<Int, UserMemo>()
+        var snapshot = Snapshot()
         snapshot.appendSections([0])
         snapshot.appendItems(list)
         self.dataSource.apply(snapshot)

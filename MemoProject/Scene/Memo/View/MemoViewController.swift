@@ -79,7 +79,7 @@ final class MemoViewController: BaseViewController {
     }
 
     
-    func setSearchController(){
+    private func setSearchController(){
         let searchController = UISearchController(searchResultsController: nil)
         searchController.searchBar.placeholder = "검색"
         searchController.hidesNavigationBarDuringPresentation = true
@@ -95,7 +95,7 @@ final class MemoViewController: BaseViewController {
         naviBackground()
     }
     
-    func setToolbar(){
+    private func setToolbar(){
         
         var items: [UIBarButtonItem] = []
         
@@ -182,8 +182,8 @@ extension MemoViewController: UITableViewDelegate, UITableViewDataSource {
         
         if isFiltering {
             cell.setData(data: filteredItem[indexPath.row])
-            cell.titleLabel.attributedText = changeFilteredColor(totalString: filteredItem[indexPath.row].memoTitle, searchString: filteredText ?? "")
-            cell.contentsLabel.attributedText = changeFilteredColor(totalString: filteredItem[indexPath.row].memoContents ?? "", searchString: filteredText ?? "")
+            cell.titleLabel.attributedText = changeFilteredColor(totalString: filteredItem[indexPath.row].title, searchString: filteredText ?? "")
+            cell.contentsLabel.attributedText = changeFilteredColor(totalString: filteredItem[indexPath.row].contents ?? "", searchString: filteredText ?? "")
             
         } else {
             if fixedList.count == 0 {
@@ -292,7 +292,7 @@ extension MemoViewController: UISearchBarDelegate, UISearchResultsUpdating {
         
         guard let text = searchController.searchBar.text?.lowercased() else { return }
         
-        filteredItem = self.repository.fetchMemo().where { $0.memoTitle.contains(text) || $0.memoContents.contains(text) }
+        filteredItem = self.repository.fetchMemo().where { $0.title.contains(text) || $0.contents.contains(text) }
         filteredText = searchController.searchBar.text?.lowercased()
         
         DispatchQueue.main.async {

@@ -43,9 +43,13 @@ extension AppDelegate {
     
     private func realmMigration() {
         
-        let config = Realm.Configuration(schemaVersion: 1) { migration, oldSchemaVersion in
+        let config = Realm.Configuration(schemaVersion: 2) { migration, oldSchemaVersion in
             
             if oldSchemaVersion < 1 {
+                
+            }
+            
+            if oldSchemaVersion < 2 {
                 
             }
             

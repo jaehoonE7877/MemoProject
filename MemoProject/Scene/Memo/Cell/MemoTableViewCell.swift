@@ -44,12 +44,12 @@ class MemoTableViewCell: BaseTableViewCell {
     
     func setData(data: UserMemo){
         
-        titleLabel.text = data.memoTitle
-        dateLabel.text = getDateFormat(date: data.memoDate)
-        if data.memoContents == "" {
+        titleLabel.text = data.title
+        dateLabel.text = getDateFormat(date: data.writtenDate)
+        if data.contents == "" {
             contentsLabel.text = "추가 텍스트 없음"
         } else {
-            contentsLabel.text = data.memoContents
+            contentsLabel.text = data.contents
         }
     }
     
